@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as ObservatoryRouteImport } from './routes/observatory'
 import { Route as ScanRouteImport } from './routes/scan'
 import { Route as TipsRouteImport } from './routes/tips'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObservatoryRoute = ObservatoryRouteImport.update({
+  id: '/observatory',
+  path: '/observatory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScanRoute = ScanRouteImport.update({
@@ -38,12 +44,14 @@ const TipsRoute = TipsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
+  '/observatory': typeof ObservatoryRoute
   '/scan': typeof ScanRoute
   '/tips': typeof TipsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
+  '/observatory': typeof ObservatoryRoute
   '/scan': typeof ScanRoute
   '/tips': typeof TipsRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
+  '/observatory': typeof ObservatoryRoute
   '/scan': typeof ScanRoute
   '/tips': typeof TipsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/history' | '/scan' | '/tips'
+  fullPaths: '/' | '/history' | '/observatory' | '/scan' | '/tips'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/history' | '/scan' | '/tips'
-  id: '__root__' | '/' | '/history' | '/scan' | '/tips'
+  to: '/' | '/history' | '/observatory' | '/scan' | '/tips'
+  id: '__root__' | '/' | '/history' | '/observatory' | '/scan' | '/tips'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HistoryRoute: typeof HistoryRoute
+  ObservatoryRoute: typeof ObservatoryRoute
   ScanRoute: typeof ScanRoute
   TipsRoute: typeof TipsRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/history'
       fullPath: '/history'
       preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/observatory': {
+      id: '/observatory'
+      path: '/observatory'
+      fullPath: '/observatory'
+      preLoaderRoute: typeof ObservatoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HistoryRoute: HistoryRoute,
+  ObservatoryRoute: ObservatoryRoute,
   ScanRoute: ScanRoute,
   TipsRoute: TipsRoute,
 }

@@ -1,12 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { Menu, X, CircleDot, TableProperties, BookOpen, Compass } from "lucide-react";
+import { Menu, X, CircleDot, TableProperties, BookOpen, Compass, Home } from "lucide-react";
 
 const NAV = [
   { to: "/scan", label: "Examine Table", icon: CircleDot },
   { to: "/history", label: "Specimen Ledger", icon: TableProperties },
   { to: "/tips", label: "Field Notes", icon: BookOpen },
-  { to: "/", label: "Observatory", icon: Compass },
+  { to: "/observatory", label: "Observatory", icon: Compass },
 ] as const;
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -18,9 +18,9 @@ export function Layout({ children }: { children: ReactNode }) {
       {/* Fixed 230px Indigo Sidebar for >= 800px (md) */}
       <aside className="hidden md:flex w-[230px] flex-shrink-0 flex-col bg-[#26244A] text-[#F3EAD6] p-5 border-r-2 border-[#26244A] sticky top-0 h-screen justify-between z-30">
         <div>
-          {/* Logo */}
-          <Link to="/" className="block group mb-8">
-            <h1 className="font-serif font-black text-3xl tracking-tight text-[#F3EAD6]">
+          {/* Logo links to Landing Page */}
+          <Link to="/" className="block group mb-6" title="Return to Landing Page">
+            <h1 className="font-serif font-black text-3xl tracking-tight text-[#F3EAD6] group-hover:text-[#E0A526] transition-colors">
               MFSP
             </h1>
             <p className="text-[10px] tracking-[0.25em] text-[#E0A526] uppercase font-bold mt-0.5">
@@ -49,6 +49,21 @@ export function Layout({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
+
+          {/* Home / Landing Page Button in Sidebar */}
+          <div className="mt-4 pt-3 border-t border-[#3B3868]">
+            <Link
+              to="/"
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-[11px] font-semibold tracking-wider transition-all min-h-[38px] ${
+                pathname === "/"
+                  ? "bg-[#E0A526] text-[#26244A]"
+                  : "text-[#E8DCC4]/80 hover:bg-[#343161] hover:text-[#FFFFFF]"
+              }`}
+            >
+              <Home className="size-3.5 flex-shrink-0" />
+              <span>Landing Page</span>
+            </Link>
+          </div>
         </div>
 
         {/* Sidebar Footer */}
@@ -80,6 +95,17 @@ export function Layout({ children }: { children: ReactNode }) {
       {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#26244A] text-[#F3EAD6] border-b-2 border-[#26244A] p-4 flex flex-col gap-2 z-40 sticky top-[57px]">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center gap-3 px-4 py-2.5 rounded text-sm font-semibold tracking-wider min-h-[44px] ${
+              pathname === "/" ? "bg-[#E0A526] text-[#26244A]" : "text-[#E8DCC4] hover:bg-[#343161]"
+            }`}
+          >
+            <Home className="size-4" />
+            <span>Landing Page</span>
+          </Link>
+
           {NAV.map((n) => {
             const Icon = n.icon;
             const active = pathname === n.to;
